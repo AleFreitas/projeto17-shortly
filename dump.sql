@@ -27,7 +27,8 @@ SET default_table_access_method = heap;
 CREATE TABLE public."Sessions" (
     id integer NOT NULL,
     token text NOT NULL,
-    "userId" integer NOT NULL
+    "userId" integer NOT NULL,
+    "createdAt" timestamp without time zone NOT NULL
 );
 
 
