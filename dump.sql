@@ -145,6 +145,7 @@ ALTER TABLE ONLY public."Users" ALTER COLUMN id SET DEFAULT nextval('public."Use
 -- Data for Name: Sessions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+INSERT INTO public."Sessions" VALUES (5, '82379867-2464-404f-a83e-d7e65c81e39e', 4, '2023-02-26 14:12:47.561559');
 
 
 --
@@ -157,14 +158,14 @@ ALTER TABLE ONLY public."Users" ALTER COLUMN id SET DEFAULT nextval('public."Use
 -- Data for Name: Users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public."Users" VALUES (3, 'João', 'joao@driven.com.br', 'driven', 0, '2023-02-26 13:37:24.726097');
+INSERT INTO public."Users" VALUES (4, 'João', 'joao@driven.com.br', '$2b$10$YqIuuc3xHZ1L4vvVHBk5IuS8VDM5BuNs3FC3Y73Cn6BbkfLzGH3NC', 0, '2023-02-26 14:09:44.749739');
 
 
 --
 -- Name: Sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."Sessions_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Sessions_id_seq"', 5, true);
 
 
 --
@@ -178,7 +179,7 @@ SELECT pg_catalog.setval('public."ShortenedUrls_id_seq"', 1, false);
 -- Name: Users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."Users_id_seq"', 3, true);
+SELECT pg_catalog.setval('public."Users_id_seq"', 4, true);
 
 
 --
@@ -187,6 +188,14 @@ SELECT pg_catalog.setval('public."Users_id_seq"', 3, true);
 
 ALTER TABLE ONLY public."Sessions"
     ADD CONSTRAINT "Sessions_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Sessions Sessions_userId_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."Sessions"
+    ADD CONSTRAINT "Sessions_userId_key" UNIQUE ("userId");
 
 
 --
