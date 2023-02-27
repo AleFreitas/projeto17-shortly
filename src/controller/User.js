@@ -35,7 +35,7 @@ export async function signIn(req, res) {
             SELECT * FROM "Users" 
             WHERE email=$1
         `,[email]);
-        if (userExists && bcrypt.compareSync(password, userExists.rows[0].password)) {
+        if ((userExists.rows.length === 0) && bcrypt.compareSync(password, userExists.rows[0].password)) {
             const token = uuid();
             await db.query(`
                 DELETE FROM "Sessions" 
@@ -46,7 +46,7 @@ export async function signIn(req, res) {
                 (token,"userId","createdAt") 
                 VALUES ($1, $2,NOW())
             `,[token,userExists.rows[0].id]);
-            res.status(201).send(token);
+            res.status(200).send(token);
         } else {
             return res.sendStatus(401);
         }
