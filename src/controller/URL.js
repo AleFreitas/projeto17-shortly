@@ -55,13 +55,49 @@ export async function redirectToUrl(req,res){
         const url = await db.query(`
             SELECT url FROM "ShortenedUrls"
             Where "shortUrl"=$1
-        `,[shortUrl])
+        `,[shortUrl]);
         if(url.rows.length === 0){
-            return res.sendStatus(404)
+            return res.sendStatus(404);
         }
-        return res.redirect(url.rows[0].url)
+        return res.redirect(url.rows[0].url);
     }catch(err){
         return res.status(500).send(err.message);
     }
 
+}
+
+export async function deleteShortUrl(req,res){
+    try{
+        const authorization = req.headers.authorization;
+        const token = authorization.replace('Bearer ', '');
+        const {id} = req.params;
+        if(!token){
+            return res.status(401);
+        }
+        const userExists = await db.query(`
+            SELECT "userId" FROM "Sessions" 
+            WHERE token=$1;
+        `, [token]);
+        if (userExists.rows.length === 0) {
+            return res.sendStatus(401);
+        }
+        const urlExists = await db.query(`
+            SELECT * FROM "ShortenedUrls" 
+            WHERE id=$1;
+        `, [id]);
+        if(urlExists.rows.length === 0){
+            return res.sendStatus(404);
+        }
+        if(urlExists.rows[0].userId === userExists.rows[0].userId){
+            await db.query(`
+                DELETE FROM "ShortenedUrls"
+                WHERE id=$1
+            `,[id]);
+            return res.sendStatus(204);
+        }else{
+            return res.sendStatus(405);
+        }
+    }catch(err){
+        return res.status(500).send(err.message);
+    }
 }
