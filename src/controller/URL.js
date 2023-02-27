@@ -27,7 +27,7 @@ export async function postUrl(req, res) {
             SELECT id, "shortUrl" FROM "ShortenedUrls"
             WHERE "shortUrl" = $1   
         `, [shortUrl]);
-        return res.send(urlTable.rows[0]);
+        return res.status(201).send(urlTable.rows[0]);
     } catch (err) {
         return res.status(500).send(err.message);
     }
