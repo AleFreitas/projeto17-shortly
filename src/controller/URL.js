@@ -53,12 +53,26 @@ export async function redirectToUrl(req,res){
     try{
         const {shortUrl} = req.params;
         const url = await db.query(`
-            SELECT url FROM "ShortenedUrls"
+            SELECT id,url,"userId","visitCount" FROM "ShortenedUrls"
             Where "shortUrl"=$1
         `,[shortUrl]);
         if(url.rows.length === 0){
             return res.sendStatus(404);
         }
+        await db.query(`
+            UPDATE "ShortenedUrls" 
+            SET "visitCount"=$1
+            WHERE id=$2
+        `,[url.rows[0].visitCount+1, url.rows[0].id])
+        const user = await db.query(`
+            SELECT "visitCount" FROM "Users"
+            WHERE id=$1
+        `,[url.rows[0].userId])
+        await db.query(`
+            UPDATE "Users"
+            SET "visitCount"=$1
+            WHERE id=$2
+        `,[user.rows[0].visitCount+1, url.rows[0].userId])
         return res.redirect(url.rows[0].url);
     }catch(err){
         return res.status(500).send(err.message);
