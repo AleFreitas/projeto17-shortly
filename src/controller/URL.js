@@ -109,7 +109,7 @@ export async function deleteShortUrl(req,res){
             `,[id]);
             return res.sendStatus(204);
         }else{
-            return res.sendStatus(405);
+            return res.sendStatus(401);
         }
     }catch(err){
         return res.status(500).send(err.message);
