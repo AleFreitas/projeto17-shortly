@@ -46,7 +46,7 @@ export async function signIn(req, res) {
                 (token,"userId","createdAt") 
                 VALUES ($1, $2,NOW())
             `,[token,userExists.rows[0].id]);
-            res.status(200).send(token);
+            res.status(200).send({token});
         } else {
             return res.sendStatus(401);
         }
