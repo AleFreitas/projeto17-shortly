@@ -48,3 +48,20 @@ export async function getUrlById(req, res) {
         return res.status(500).send(err.message);
     }
 }
+
+export async function redirectToUrl(req,res){
+    try{
+        const {shortUrl} = req.params;
+        const url = await db.query(`
+            SELECT url FROM "ShortenedUrls"
+            Where "shortUrl"=$1
+        `,[shortUrl])
+        if(url.rows.length === 0){
+            return res.sendStatus(404)
+        }
+        return res.redirect(url.rows[0].url)
+    }catch(err){
+        return res.status(500).send(err.message);
+    }
+
+}
