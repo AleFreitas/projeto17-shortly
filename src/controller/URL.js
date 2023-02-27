@@ -101,3 +101,33 @@ export async function deleteShortUrl(req,res){
         return res.status(500).send(err.message);
     }
 }
+
+export async function getUserData(req,res){
+    try{
+        const authorization = req.headers.authorization;
+        const token = authorization.replace('Bearer ', '');
+        if(!token){
+            return res.status(401);
+        }
+        const userExists = await db.query(`
+            SELECT "userId" FROM "Sessions" 
+            WHERE token=$1;
+        `, [token]);
+        if (userExists.rows.length === 0) {
+            return res.sendStatus(401);
+        }
+        const user = await db.query(`
+            SELECT id, name, "visitCount" FROM "Users"
+            WHERE id=$1
+        `,[userExists.rows[0].userId])
+        const urls = await db.query(`
+            SELECT id,"shortUrl",url,"visitCount" FROM "ShortenedUrls"
+            WHERE "userId"=$1
+        `,[userExists.rows[0].userId])
+        const userData = user.rows[0]
+        userData.shortenedUrls = urls.rows
+        res.send(userData)
+    }catch(err){
+        return res.status(500).send(err.message)
+    }
+}
