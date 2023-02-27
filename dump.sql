@@ -145,34 +145,36 @@ ALTER TABLE ONLY public."Users" ALTER COLUMN id SET DEFAULT nextval('public."Use
 -- Data for Name: Sessions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public."Sessions" VALUES (5, '82379867-2464-404f-a83e-d7e65c81e39e', 4, '2023-02-26 14:12:47.561559');
+INSERT INTO public."Sessions" VALUES (8, 'de4bddaf-648b-4168-9aae-f644614104e6', 4, '2023-02-27 15:04:16.022729');
 
 
 --
 -- Data for Name: ShortenedUrls; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+INSERT INTO public."ShortenedUrls" VALUES (4, 'http://sad', 0, 'hOGC5DfW7jikvdEFLr2Ln', 4, '2023-02-27 15:47:22.348411');
+INSERT INTO public."ShortenedUrls" VALUES (3, 'https://pt.stackoverflow.com/questions/173221/como-checar-se-uma-string-est%C3%A1-vazia-em-javascript', 4, 'Ki_L2B88hlLGIaGDOqivg', 4, '2023-02-27 15:46:23.045108');
 
 
 --
 -- Data for Name: Users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public."Users" VALUES (4, 'João', 'joao@driven.com.br', '$2b$10$YqIuuc3xHZ1L4vvVHBk5IuS8VDM5BuNs3FC3Y73Cn6BbkfLzGH3NC', 0, '2023-02-26 14:09:44.749739');
+INSERT INTO public."Users" VALUES (4, 'João', 'joao@driven.com.br', '$2b$10$YqIuuc3xHZ1L4vvVHBk5IuS8VDM5BuNs3FC3Y73Cn6BbkfLzGH3NC', 4, '2023-02-26 14:09:44.749739');
 
 
 --
 -- Name: Sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."Sessions_id_seq"', 5, true);
+SELECT pg_catalog.setval('public."Sessions_id_seq"', 8, true);
 
 
 --
 -- Name: ShortenedUrls_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."ShortenedUrls_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."ShortenedUrls_id_seq"', 4, true);
 
 
 --
