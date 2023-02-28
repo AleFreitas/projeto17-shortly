@@ -145,3 +145,21 @@ export async function getUserData(req,res){
         return res.status(500).send(err.message)
     }
 }
+
+export async function getRanking(req,res){
+    try{
+        const rankList = await db.query(`
+            SELECT "Users".id,"Users".name,
+            COUNT("ShortenedUrls".id) as "linksCOunt", "Users"."visitCount" 
+            FROM "Users" 
+            Left JOIN "ShortenedUrls" 
+            ON "Users".id = "ShortenedUrls"."userId"
+            GROUP BY "Users".id
+            ORDER BY "Users"."visitCount" DESC, "Users"."createdAt" ASC
+            LIMIT 10;
+        `);
+        res.status(200).send(rankList.rows);
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+}
