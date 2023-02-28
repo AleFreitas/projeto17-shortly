@@ -35,15 +35,15 @@ export async function postUrl(req, res) {
 
 export async function getUrlById(req, res) {
     try {
-        const {id} = req.params
+        const {id} = req.params;
         const query = await db.query(`
             SELECT id,"shortUrl",url FROM "ShortenedUrls"
             Where id=$1
-        `,[id])
+        `,[id]);
         if(query.rows.length === 0){
-            return res.sendStatus(404)
+            return res.sendStatus(404);
         }
-        return res.status(200).send(query.rows[0])
+        return res.status(200).send(query.rows[0]);
     } catch (err) {
         return res.status(500).send(err.message);
     }
@@ -63,16 +63,16 @@ export async function redirectToUrl(req,res){
             UPDATE "ShortenedUrls" 
             SET "visitCount"=$1
             WHERE id=$2
-        `,[url.rows[0].visitCount+1, url.rows[0].id])
+        `,[url.rows[0].visitCount+1, url.rows[0].id]);
         const user = await db.query(`
             SELECT "visitCount" FROM "Users"
             WHERE id=$1
-        `,[url.rows[0].userId])
+        `,[url.rows[0].userId]);
         await db.query(`
             UPDATE "Users"
             SET "visitCount"=$1
             WHERE id=$2
-        `,[user.rows[0].visitCount+1, url.rows[0].userId])
+        `,[user.rows[0].visitCount+1, url.rows[0].userId]);
         return res.redirect(url.rows[0].url);
     }catch(err){
         return res.status(500).send(err.message);
@@ -133,16 +133,16 @@ export async function getUserData(req,res){
         const user = await db.query(`
             SELECT id, name, "visitCount" FROM "Users"
             WHERE id=$1
-        `,[userExists.rows[0].userId])
+        `,[userExists.rows[0].userId]);
         const urls = await db.query(`
             SELECT id,"shortUrl",url,"visitCount" FROM "ShortenedUrls"
             WHERE "userId"=$1
-        `,[userExists.rows[0].userId])
-        const userData = user.rows[0]
-        userData.shortenedUrls = urls.rows
-        res.send(userData)
+        `,[userExists.rows[0].userId]);
+        const userData = user.rows[0];
+        userData.shortenedUrls = urls.rows;
+        res.send(userData);
     }catch(err){
-        return res.status(500).send(err.message)
+        return res.status(500).send(err.message);
     }
 }
 
@@ -150,7 +150,7 @@ export async function getRanking(req,res){
     try{
         const rankList = await db.query(`
             SELECT "Users".id,"Users".name,
-            COUNT("ShortenedUrls".id) as "linksCOunt", "Users"."visitCount" 
+            COUNT("ShortenedUrls".id) as "linksCount", "Users"."visitCount" 
             FROM "Users" 
             Left JOIN "ShortenedUrls" 
             ON "Users".id = "ShortenedUrls"."userId"

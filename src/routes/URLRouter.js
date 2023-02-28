@@ -6,10 +6,10 @@ import { PostUrlSchema } from '../schema/URLSchema.js';
 const urlRouter = Router();
 
 urlRouter.post("/urls/shorten", validateSchema(PostUrlSchema), postUrl);
-urlRouter.get("/urls/:id", getUrlById)
-urlRouter.get("/urls/open/:shortUrl", redirectToUrl)
-urlRouter.delete("/urls/:id", deleteShortUrl)
-urlRouter.get("/users/me", getUserData)
-urlRouter.get("/ranking", getRanking)
+urlRouter.get("/urls/:id", getUrlById);
+urlRouter.get("/urls/open/:shortUrl", redirectToUrl);
+urlRouter.delete("/urls/:id", deleteShortUrl);
+urlRouter.get("/users/me", getUserData);
+urlRouter.get("/ranking", getRanking);
 
 export default urlRouter;

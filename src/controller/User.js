@@ -35,7 +35,7 @@ export async function signIn(req, res) {
             SELECT * FROM "Users" 
             WHERE email=$1
         `,[email]);
-        if (!(userExists.rows.length === 0) && bcrypt.compareSync(password, userExists.rows[0].password)) {
+        if ((userExists.rows.length !== 0) && bcrypt.compareSync(password, userExists.rows[0].password)) {
             const token = uuid();
             await db.query(`
                 DELETE FROM "Sessions" 
